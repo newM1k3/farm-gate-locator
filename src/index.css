@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+
+  /* Accessibility: visible focus ring for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #2D5A27;
+    outline-offset: 2px;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Safe area for devices with notches */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-green-dark text-white px-6 py-3 rounded-xl font-semibold
+           hover:bg-green-mid active:scale-[0.97] transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+    min-height: 44px; /* WCAG touch target minimum */
+    min-width: 44px;
+  }
+  .btn-secondary {
+    @apply bg-amber text-white px-4 py-2 rounded-lg font-medium
+           hover:brightness-110 active:scale-[0.97] transition-all duration-200;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-md overflow-hidden;
+  }
+  .chip {
+    @apply px-4 py-2 rounded-full text-sm font-medium border-2 transition-all duration-200
+           cursor-pointer select-none whitespace-nowrap;
+    min-height: 36px;
+  }
+  .chip-active {
+    @apply bg-green-dark text-white border-green-dark;
+  }
+  .chip-inactive {
+    @apply bg-white text-brown-light border-cream-dark hover:border-green-mid hover:text-green-dark;
+  }
+  .badge-green {
+    @apply bg-green-light text-green-dark text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-amber {
+    @apply bg-amber-light text-amber text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-stale {
+    @apply bg-gray-100 text-stale text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+
+  /* Stale data warning */
+  .stale-warning {
+    @apply bg-stale-light border border-stale/20 rounded-xl p-3 flex items-center gap-3 text-sm;
+  }
+
+  /* Scrollbar hiding for filter chips */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Screen reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Slide-up animation */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
