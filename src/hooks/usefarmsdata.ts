@@ -20,7 +20,11 @@ function loadFarms(): Farm[] {
 }
 
 function saveFarms(farms: Farm[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(farms));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(farms));
+  } catch {
+    // Private browsing and full quotas should not stop the in-memory pilot.
+  }
 }
 
 export function useFarmsData() {
@@ -63,7 +67,7 @@ export function useFarmsData() {
     setFarms((prev) =>
       prev.map((f) => {
         if (f.id !== farmId) return f;
-        return { ...f, alertEnabled: !(f as any).alertEnabled };
+        return { ...f, alertEnabled: !f.alertEnabled };
       })
     );
   }, []);
@@ -106,8 +110,7 @@ export function useFarmsData() {
   const getAlertedFarms = useCallback(() => {
     const now = new Date();
     return farms.filter((f) => {
-      const alert = (f as any).alertEnabled;
-      if (!alert) return false;
+      if (!f.alertEnabled) return false;
       const hoursSinceUpdate = (now.getTime() - f.lastUpdated.getTime()) / 3600000;
       return hoursSinceUpdate < 24;
     });

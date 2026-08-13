@@ -1,9 +1,9 @@
 import { Farm, ProductCategory } from '../types';
 
-const now = new Date();
-const minutesAgo = (m: number) => new Date(now.getTime() - m * 60000);
-const hoursAgo = (h: number) => new Date(now.getTime() - h * 3600000);
-const daysAgo = (d: number) => new Date(now.getTime() - d * 86400000);
+const seedTime = new Date();
+const minutesAgo = (m: number) => new Date(seedTime.getTime() - m * 60000);
+const hoursAgo = (h: number) => new Date(seedTime.getTime() - h * 3600000);
+const daysAgo = (d: number) => new Date(seedTime.getTime() - d * 86400000);
 
 export const CATEGORIES: { key: ProductCategory | 'all'; label: string; emoji: string }[] = [
   { key: 'all', label: 'All', emoji: '🏷️' },
@@ -112,14 +112,14 @@ export const FARMS: Farm[] = [
 ];
 
 export function getAvailabilityState(farm: Farm): 'available' | 'sold-out' | 'stale' {
-  const hoursSinceUpdate = (now.getTime() - farm.lastUpdated.getTime()) / 3600000;
+  const hoursSinceUpdate = (Date.now() - farm.lastUpdated.getTime()) / 3600000;
   if (hoursSinceUpdate > 48) return 'stale';
   if (farm.products.some((p) => p.available)) return 'available';
   return 'sold-out';
 }
 
 export function timeAgo(date: Date): string {
-  const minutes = Math.floor((now.getTime() - date.getTime()) / 60000);
+  const minutes = Math.floor((Date.now() - date.getTime()) / 60000);
   if (minutes < 1) return 'just now';
   if (minutes < 60) return `${minutes}m ago`;
   const hours = Math.floor(minutes / 60);

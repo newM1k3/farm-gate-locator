@@ -45,7 +45,11 @@ export default class ErrorBoundary extends Component<Props, State> {
             </button>
             <button
               onClick={() => {
-                localStorage.removeItem('***');
+                const fixedKeys = ['farm-gate-farms', 'pilot-feedback'];
+                fixedKeys.forEach((key) => localStorage.removeItem(key));
+                Object.keys(localStorage)
+                  .filter((key) => key.startsWith('visit-notes-'))
+                  .forEach((key) => localStorage.removeItem(key));
                 window.location.reload();
               }}
               className="px-4 py-3 rounded-xl border-2 border-cream-dark text-brown-light text-sm hover:bg-cream-dark transition-colors"
